@@ -1,0 +1,40 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Battery Energy Cost",
+        "description": "Select the sensors to use for calculating battery energy cost. You can also specify an initial starting value and average cost.",
+        "data": {
+          "battery_input_energy": "Battery Input Energy Sensor",
+          "battery_output_energy": "Battery Output Energy Sensor",
+          "battery_power": "Battery Power Sensor",
+          "grid_power": "Grid Power Sensor",
+          "pv_power": "PV Power Sensor",
+          "nordpool_import": "Nordpool Import Price Sensor",
+          "battery_soc": "Battery State of Charge Sensor",
+          "manual_value_override": "Initial Battery Energy Value (EUR) (Optional)",
+          "manual_cost_override": "Initial Battery Average Cost (EUR/kWh) (Optional)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Battery Energy Cost Options",
+        "description": "Adjust sensors or override the current battery value and cost.",
+        "data": {
+          "battery_input_energy": "Battery Input Energy Sensor",
+          "battery_output_energy": "Battery Output Energy Sensor",
+          "battery_power": "Battery Power Sensor",
+          "grid_power": "Grid Power Sensor",
+          "pv_power": "PV Power Sensor",
+          "nordpool_import": "Nordpool Import Price Sensor",
+          "battery_soc": "Battery State of Charge Sensor",
+          "manual_value_override": "Manual Battery Energy Value (EUR) Override (Optional)",
+          "manual_cost_override": "Manual Battery Average Cost (EUR/kWh) Override (Optional)"
+        }
+      }
+    }
+  }
+}

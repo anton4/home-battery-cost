@@ -1,0 +1,21 @@
+"""Constants for the Battery Energy Cost integration."""
+
+DOMAIN = "battery_energy_cost"
+
+CONF_BATTERY_INPUT_ENERGY = "battery_input_energy"
+CONF_BATTERY_OUTPUT_ENERGY = "battery_output_energy"
+CONF_BATTERY_POWER = "battery_power"
+CONF_GRID_POWER = "grid_power"
+CONF_PV_POWER = "pv_power"
+CONF_NORDPOOL_IMPORT = "nordpool_import"
+CONF_BATTERY_SOC = "battery_soc"
+CONF_MANUAL_VALUE_OVERRIDE = "manual_value_override"
+CONF_MANUAL_COST_OVERRIDE = "manual_cost_override"
+
+DEFAULT_BATTERY_INPUT_ENERGY = "sensor.sofar_battery_input_energy_total"
+DEFAULT_BATTERY_OUTPUT_ENERGY = "sensor.sofar_battery_output_energy_total"
+DEFAULT_BATTERY_POWER = "sensor.sofar_battery_power_total"
+DEFAULT_GRID_POWER = "sensor.sofar_active_power_pcc_total"
+DEFAULT_PV_POWER = "sensor.sofar_pv_power_total"
+DEFAULT_NORDPOOL_IMPORT = "sensor.nordpool_import"
+DEFAULT_BATTERY_SOC = "sensor.sofar_battery_capacity_1"
