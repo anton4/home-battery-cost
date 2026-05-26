@@ -15,6 +15,7 @@ from homeassistant.core import HomeAssistant, callback, Event, State
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.restore_state import RestoreEntity
+from homeassistant.helpers.entity import DeviceInfo
 
 from .const import (
     DOMAIN,
@@ -262,6 +263,14 @@ class BatteryEnergyBaseSensor(RestoreEntity, SensorEntity):
         self._last_calib_output_kwh = current_output
         self._integrated_output_kwh_since_calib = 0.0
 
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return device information."""
+        return DeviceInfo(
+            identifiers={(DOMAIN, self._entry.entry_id)},
+            name="Battery Energy Cost",
+            manufacturer="Custom Integration",
+        )
 
 class BatteryEnergyValueSensor(BatteryEnergyBaseSensor):
     """Sensor for total battery energy value in EUR."""
