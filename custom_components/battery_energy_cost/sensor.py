@@ -75,16 +75,19 @@ class BatteryEnergyBaseSensor(RestoreEntity, SensorEntity):
         
         # Restore previous state
         state = await self.async_get_last_state()
-        if state is not None and state.state not in (None, "unknown", "unavailable"):
+        if state is not None and state.attributes:
             try:
-                # Basic restore if available, but manual overrides take precedence
-                pass
+                if "current_value_eur" in state.attributes:
+                    self._current_value_eur = float(state.attributes["current_value_eur"])
+                if "current_energy_kwh" in state.attributes:
+                    self._current_energy_kwh = float(state.attributes["current_energy_kwh"])
             except ValueError:
                 pass
 
-        # Check for manual overrides from options flow
-        manual_value = self._config.get(CONF_MANUAL_VALUE_OVERRIDE)
-        manual_cost = self._config.get(CONF_MANUAL_COST_OVERRIDE)
+        # Check for manual overrides from hass.data
+        overrides = self.hass.data.get(DOMAIN, {}).get(self._entry.entry_id, {})
+        manual_value = overrides.get(CONF_MANUAL_VALUE_OVERRIDE)
+        manual_cost = overrides.get(CONF_MANUAL_COST_OVERRIDE)
         
         if manual_value is not None and manual_cost is not None:
             self._current_value_eur = float(manual_value)
@@ -92,11 +95,6 @@ class BatteryEnergyBaseSensor(RestoreEntity, SensorEntity):
                 self._current_energy_kwh = self._current_value_eur / float(manual_cost)
             else:
                 self._current_energy_kwh = 0.0
-            
-            # Clear them from options so we don't restore them on every reboot
-            # We can't modify options directly here, but HA will reload the entry if options change.
-            # If the user doesn't clear them, it will re-override on every boot.
-            # This is acceptable for a simple implementation.
 
         # Track state changes of all dependent sensors
         sensors_to_track = [
@@ -295,6 +293,7 @@ class BatteryEnergyValueSensor(BatteryEnergyBaseSensor):
     def extra_state_attributes(self) -> dict:
         """Return extra state attributes."""
         return {
+            "current_value_eur": round(self._current_value_eur, 4),
             "current_energy_kwh": round(self._current_energy_kwh, 4),
         }
 
@@ -319,3 +318,11 @@ class BatteryEnergyAvgCostSensor(BatteryEnergyBaseSensor):
         if self._current_energy_kwh > 0:
             return round(self._current_value_eur / self._current_energy_kwh, 4)
         return 0.0
+
+    @property
+    def extra_state_attributes(self) -> dict:
+        """Return extra state attributes."""
+        return {
+            "current_value_eur": round(self._current_value_eur, 4),
+            "current_energy_kwh": round(self._current_energy_kwh, 4),
+        }
