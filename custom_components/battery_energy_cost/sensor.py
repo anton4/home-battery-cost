@@ -171,6 +171,7 @@ class BatteryEnergyBaseSensor(RestoreEntity, SensorEntity):
         battery_power = self._get_float_state(self._config[CONF_BATTERY_POWER])
         grid_power = self._get_float_state(self._config[CONF_GRID_POWER])
         nordpool_price = self._get_float_state(self._config[CONF_NORDPOOL_IMPORT])
+	pv_power = self._get_float_state(self._config.get(CONF_PV_POWER)) or 0.0
 
         if battery_power is None:
             return
@@ -187,8 +188,10 @@ class BatteryEnergyBaseSensor(RestoreEntity, SensorEntity):
             if grid_power is not None and nordpool_price is not None:
                 # grid_power < 0 means importing
                 grid_import_power = max(0.0, -grid_power)
-                # how much of charging comes from grid vs pv?
-                charging_from_grid = min(battery_power, grid_import_power)
+
+		# how much of charging comes from grid vs pv?
+                # NEW LOGIC: Only charge from grid if battery power exceeds PV power
+                charging_from_grid = max(0.0, min(battery_power - pv_power, grid_import_power)) 
                 cost_eur = (charging_from_grid * delta_hours) * nordpool_price
                 
             self._accumulated_value_since_calib += cost_eur
