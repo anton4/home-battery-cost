@@ -171,7 +171,7 @@ class BatteryEnergyBaseSensor(RestoreEntity, SensorEntity):
         battery_power = self._get_float_state(self._config[CONF_BATTERY_POWER])
         grid_power = self._get_float_state(self._config[CONF_GRID_POWER])
         nordpool_price = self._get_float_state(self._config[CONF_NORDPOOL_IMPORT])
-	pv_power = self._get_float_state(self._config.get(CONF_PV_POWER)) or 0.0
+        pv_power = self._get_float_state(self._config.get(CONF_PV_POWER)) or 0.0
 
         if battery_power is None:
             return
